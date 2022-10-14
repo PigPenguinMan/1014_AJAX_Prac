@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .list {
+            border:1px solid black;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>메뉴 리스트입니다</h1>  
+    <div>
+        <h2>식당이름</h2>
+        <p>메뉴 카테고리 대분류 명 - 메뉴 이름 </p>
+    </div>
+    
+    <button id="More">추가 </button>
+
+    <script>
+        async function menuList (nextCount) {
+            const resposne = await fetch('./공공데이터.json')
+            data= await resposne.json();
+        
+             
+                function menuTag (name,category,menu){
+                    const box = document.createElement('div');
+                    const h3Tag = document.createElement('h3');
+                    h3Tag.innerHTML = name ;
+                    const pTag = document.createElement('p')
+                    pTag.innerHTML = `${category}-${menu}`;
+                    box.append(h3Tag);
+                    box.append(pTag);
+                    box.classList.add('list')
+                    document.querySelector('body').append(box)
+                }
+
+                for (let i = nextCount ; i<nextCount+5 ; i++){
+                    let count = 0 ;
+                    for (j= nextCount ; j<1000 ; j++){
+                        count =j;
+                        break;
+                    }
+                    menuTag(data.body[i].RSTR_NM,
+                data.body[i].MENU_CTGRY_LCLAS_NM,
+                data.body[i].MENU_NM)
+                }
+                
+        }
+        menuList(0)
+
+        let nextCount = 0 ;
+        const button = document.querySelector('#More');
+        button.addEventListener('click',()=>{
+            nextCount += 10;
+            menuList(nextCount)
+        })
+    </script>
+</body>
+</html>
